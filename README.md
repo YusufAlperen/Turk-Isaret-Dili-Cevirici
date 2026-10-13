@@ -12,7 +12,7 @@
 ## Depo yapısı ve dosya açıklamaları
 
 ### `harfModel/` — Harf tanıma ve eğitim
-
+**Kullanılan Veri Seti = https://www.kaggle.com/datasets/berkaykocaoglu/tr-sign-language**
 | Dosya | Açıklama |
 |---|---|
 | `harfModelEgitimi.ipynb` | 128×128 renkli iskelet görüntülerini klasör etiketlerinden yükler, veriyi eğitim/doğrulama kümelerine ayırır ve CNN tabanlı harf sınıflandırıcısını eğitir. Döndürme, öteleme ve yakınlaştırma veri artırımı; `ModelCheckpoint` ve `EarlyStopping` kullanımı içerir. |
@@ -23,7 +23,7 @@
 | `labels.txt` | Harf modelinin sınıf sırasını belirtir. `del`, `nothing` ve `space` gibi özel sınıfları da içerir. |
 
 ### `kelimeModel/` — Kelime modeli için veri hazırlama
-
+**Kullanılan Veriseti = https://chalearnlap.cvc.uab.es/dataset/40/description/**
 | Dosya | Açıklama |
 |---|---|
 | `ozellikCikarma.py` | Kelime videolarından örneklenmiş 30 kare seçer; her kare için MediaPipe Pose ve Hand Landmarker kullanarak gövde ve iki el landmark'larını birleştirir. Çıktıları `X` ve `y` NumPy dizileri olarak kaydeder. |
