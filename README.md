@@ -42,43 +42,6 @@
 | `app/src/main/java/com/example/signtr2/TurkishLemmatizer.kt` | Girilen Türkçe cümleyi çözümleyerek kelimeleri işaret video etiketleriyle eşleştirmeye yardımcı olur. |
 | `app/src/main/java/com/example/signtr2/NLG.kt` | Kelime dizilerinden daha düzenli Türkçe cümleler üretmek için fiil çekimi, olumsuzluk, zaman ve bazı isim hâli işlemlerini içeren kural tabanlı dil üretim kodu. |
 
-#### Android yapılandırması ve arayüz kaynakları
-
-| Dosya / klasör | Açıklama |
-|---|---|
-| `app/build.gradle.kts` | Android modülünün derleme yapılandırması ve bağımlılık tanımları. |
-| `app/src/main/AndroidManifest.xml` | Uygulama bileşenleri ve gerekli Android izinlerinin tanımı. |
-| `app/src/main/res/layout/activity_main.xml` | Ana ekranın yerleşimi. |
-| `app/src/main/res/layout/fragment_sign_to_text.xml` | İşaretten metne ekranının arayüz yerleşimi. |
-| `app/src/main/res/layout/fragment_text_to_sign.xml` | Metinden işarete ekranının arayüz yerleşimi. |
-| `app/src/main/res/menu/bottom_nav_menu.xml` | Alt gezinme menüsünün öğeleri. |
-| `app/src/main/res/values/strings.xml` | Arayüz metinleri. |
-| `app/src/main/res/values/colors.xml` | Renk tanımları. |
-| `app/src/main/res/values/themes.xml` ve `values-night/themes.xml` | Gündüz/gece tema tanımları. |
-| `app/src/main/res/color/bottom_nav_color.xml` | Alt gezinme bileşeni için renk durumu tanımı. |
-| `app/src/main/res/drawable/` | Başlatıcı simgesinin ön plan ve arka plan çizimleri. |
-| `app/src/main/res/mipmap-*/` | Farklı yoğunluklar için uygulama ve yuvarlak uygulama simgeleri. |
-| `app/src/main/res/xml/backup_rules.xml` | Android yedekleme kuralları. |
-| `app/src/main/res/xml/data_extraction_rules.xml` | Android veri çıkarımı/yedekleme kuralları. |
-| `app/src/androidTest/java/com/example/signtr2/ExampleInstrumentedTest.kt` | Android cihaz/çalışma zamanı ortamında yürütülmek üzere oluşturulmuş örnek enstrümantasyon testi. |
-| `app/proguard-rules.pro` | R8/ProGuard küçültme ve kod koruma kuralları için dosya. |
-| `app/.gitignore`, `mobilUygulama/.gitignore`, `.gitignore` | Git tarafından izlenmemesi gereken dosya ve klasör kalıpları. |
-| `.idea/` | Android Studio/IntelliJ proje ve yerel geliştirme ortamı ayarları. Bunlar modelin çalışma mantığı değil, IDE yapılandırmasıdır. |
-| `.kotlin/errors/` | Geliştirme sırasında oluşmuş Kotlin derleme hata günlükleri; uygulamanın iş mantığının parçası değildir. |
-
-#### `app/src/main/assets/` — Modeller, etiketler ve videolar
-
-| Dosya / klasör | Açıklama |
-|---|---|
-| `harf_modeli.tflite` | Mobil uygulamada harf sınıflandırması için kullanılan TensorFlow Lite modeli. |
-| `en_iyi_model.tflite` | Mobil uygulamada kelime tanıma için kullanılan TensorFlow Lite modeli. Dosya adı tek başına modelin bağımsız testte en iyi sonucu verdiğini kanıtlamaz. |
-| `hand_landmarker.task` | MediaPipe el landmark'larını tespit etmek için kullanılan görev modeli. |
-| `holistic_landmarker.task` | Uygulamanın bütüncül landmark çıkarımı akışında kullanılan MediaPipe görev modeli. |
-| `pose_landmarker.task` | Vücut pozu landmark'larını çıkarmak için kullanılan MediaPipe görev modeli. |
-| `labels_harf.txt` | Harf TFLite modelinin çıktı indekslerini harf/özel sınıf adlarıyla eşleştiren etiket listesi. |
-| `labels_kelime.txt` | Kelime TFLite modelinin çıktı indekslerini kelime etiketleriyle eşleştiren etiket listesi. |
-| `videos/*.mp4` | Metinden işarete ekranında kelimelerle eşleştirilerek oynatılan işaret dili video varlıkları. Depoda 226 MP4 video dosyası bulunmaktadır. |
-
 ## Sonuçlar ve doğruluk
 
 ### Harf sınıflandırma modeli
@@ -90,23 +53,6 @@
 - Eğitim günlüğünde görülen en yüksek doğrulama doğruluğu: **%94,28** (27. epoch).
 - Aynı epoch'taki doğrulama kaybı (`val_loss`): **0,2163**.
 - Eğitim günlüğü 34. epoch'a kadar kayıt içeriyor; yapılandırmada üst sınır 50 epoch ve erken durdurma ayarı bulunuyor.
-
-Bu değer, notebook'taki doğrulama bölümünde ölçülen sınıflandırma başarısıdır. Ayrı ve bağımsız bir test kümesinde ölçülmüş sonuç olarak yorumlanmamalıdır. Ayrıca modelin gerçek ortamda farklı kişiler, kamera açıları, ışık koşulları ve arka planlar altında aynı doğruluğu vereceği sonucunu tek başına göstermez.
-
-### Kelime sınıflandırma modeli
-
-Depoda kelime modeline yönelik özellik çıkarımı, normalizasyon ve veri artırma betikleri ile uygulamada kullanılan `en_iyi_model.tflite` dosyası yer alıyor. Ancak depoda kelime modelinin test/doğrulama sonuçlarını, karışıklık matrisini veya doğruluk değerini doğrulayacak bir eğitim günlüğü ya da değerlendirme raporu bulunmuyor. Bu nedenle kelime tanıma için **kanıtlanmış bir yüzde doğruluk belirtilemiyor**.
-
-### Uygulama düzeyindeki sonuçlar
-
-Kod ve varlıklar iki akışın tasarlandığını gösteriyor: işaret tahminiyle metin üretimi ve metinden kelime videoları oluşturma. Fakat model doğruluğu ile uçtan uca çeviri başarısı aynı ölçüt değildir. Uygulamanın genel çeviri doğruluğu, gecikmesi veya kullanıcı başarısı hakkında sayısal bir iddia sunmak için ayrı test protokolü ve ölçüm sonuçları gerekir.
-
-## Bilinen kapsam ve sınırlamalar
-
-- Harf etiket dosyası Latin harflerinin bir alt kümesini ve `del`, `nothing`, `space` gibi özel sınıfları içerir; bu nedenle Türk alfabesindeki her harfin desteklendiği varsayılmamalıdır.
-- Metinden işarete akışı mevcut video etiketleriyle eşleştirmeye dayanır. Her Türkçe cümle için dilbilgisel ve anlamsal açıdan eksiksiz Türk İşaret Dili çevirisi sağladığı söylenemez.
-- İşaret dilleri yalnızca el şekillerinden oluşmaz; hareket, konum, yüz ifadesi ve bağlam da önemlidir.
-- Veri artırımı veya doğrulama doğruluğu, tek başına gerçek dünya performansını kanıtlamaz.
 
 ## Teknoloji özeti
 
